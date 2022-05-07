@@ -26,12 +26,18 @@ class Question(TimeStampModel):
     class Meta:
         db_table = 'questions'
 
+    def __str__(self):
+        return f"{self.title}"
+
 class Choice(TimeStampModel):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     text = models.CharField(max_length=50)
 
     class Meta:
         db_table = 'choices'
+    
+    def __str__(self):
+        return f"{self.text}"
 
 class Respondent(models.Model):
     survey = models.ForeignKey(Survey, on_delete=models.SET_NULL, null=True)
