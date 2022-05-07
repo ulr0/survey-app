@@ -15,6 +15,9 @@ class Survey(TimeStampModel):
     class Meta:
         db_table = 'surveys'
 
+    def __str__(self):
+        return f"{self.title}"
+
 class Question(TimeStampModel):
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
