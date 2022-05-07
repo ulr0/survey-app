@@ -27,7 +27,6 @@ class SurveyAdmin(NestedModelAdmin):
         'number_of_respondents',
         'created_at',
         'updated_at',
-        'is_deleted',
         'update'
     ]
     list_display_links = [
