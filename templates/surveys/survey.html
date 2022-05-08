@@ -1,0 +1,47 @@
+{% block content %}
+
+<div style='width:50%;margin:0 auto;padding:2px;background-color:#d6f6f6;'>
+    <div>
+        <h1 style='text-align:center;padding:15px;'>{{ survey.title }}</h1>
+    </div>
+    <div>
+    <form action="{% url 'surveys:create_respondent_answers' survey.id %}" method='post'>
+    {% for question in questions %}
+        <div style='width:90%;background-color:#ffffff;padding:0 15px;margin:10px auto;'>
+            <p style='font-size:17px;font-weight:500;padding:10 0;margin:0;'>{{ question.title}}</p>
+            {% csrf_token %}
+            {% if question.choice_type == 'select'%}
+                <div style='padding:0 0 10px 0;'>
+                    <select style='width:100px;height:22px;' name='question_{{ question.id }}'>
+                    {% for choice in question.choice_set.all %}
+                        <option value={{ choice.id }}>{{ choice.text }}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+            {% else %}
+                {% for choice in question.choice_set.all %}
+                    <div style='padding:5px 0;'>
+                        <input type={{ question.choice_type }} id='choice_{{ choice.id }}' name='question_{{ question.id }}' value={{ choice.id }}>
+                        <label for 'choice_{{ choice.id }}'>{{ choice.text }}</label>
+                        <br/>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    {% endfor %}
+    </div>
+    <div style='width:90%;background-color:#ffffff;padding:0 15px;margin:10px auto;'>
+        <p style='font-size:17px;font-weight:500;padding:10px 0;margin:0;'>휴대폰 번호를 입력해주세요.</p>
+            <div style='padding:0 0 10px 0;'>
+                <input tyoe='text' name='phone_number'></input>
+                </br>
+            </div>
+    </div>
+    <div style='width:95%;padding:0;margin:10px auto;text-align:end;'>
+        <button style='width:70px;height:30px;background-color:#ffffff;font-size:17px;border:1px solid black;border-radius:4px;'
+        type='submit'>제출</button>
+    </div>
+    </form>
+</div>
+
+{% endblock %}
