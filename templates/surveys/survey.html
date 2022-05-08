@@ -1,5 +1,17 @@
 {% block content %}
 
+{% if messages %}
+<div class="messages" style='width:50%;margin:10px auto;background-color:#fad0d0;text-align:center;'>
+    {% for message in messages %}
+    <p style='padding:5px;font-weight:500;'
+        {% if message.tags %} 
+            class="{{ message.tags }}"
+        {% endif %}
+    >{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+
 <div style='width:50%;margin:0 auto;padding:2px;background-color:#d6f6f6;'>
     <div>
         <h1 style='text-align:center;padding:15px;'>{{ survey.title }}</h1>
@@ -21,7 +33,11 @@
             {% else %}
                 {% for choice in question.choice_set.all %}
                     <div style='padding:5px 0;'>
-                        <input type={{ question.choice_type }} id='choice_{{ choice.id }}' name='question_{{ question.id }}' value={{ choice.id }}>
+                        <input type={{ question.choice_type }} id='choice_{{ choice.id }}' 
+                        name='question_{{ question.id }}' value={{ choice.id }} 
+                        {% if question.choice_type == 'radio' %} required
+                        {% endif %}
+                        >
                         <label for 'choice_{{ choice.id }}'>{{ choice.text }}</label>
                         <br/>
                     </div>
@@ -33,8 +49,7 @@
     <div style='width:90%;background-color:#ffffff;padding:0 15px;margin:10px auto;'>
         <p style='font-size:17px;font-weight:500;padding:10px 0;margin:0;'>휴대폰 번호를 입력해주세요.</p>
             <div style='padding:0 0 10px 0;'>
-                <input tyoe='text' name='phone_number'></input>
-                </br>
+                <input tyoe='text' name='phone_number' pattern="^01[0-9]{8,9}$" placeholder='01012341234' required></input>
             </div>
     </div>
     <div style='width:95%;padding:0;margin:10px auto;text-align:end;'>
