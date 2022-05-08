@@ -34,9 +34,7 @@ class SurveyAdmin(NestedModelAdmin):
     ]
     list_per_page = 15
 
-    fieldsets = (
-        (None, {'fields' : ['title']}),
-    )
+    search_fields = ['title', 'question__title']
 
     inlines = [QuestionInline]
 
