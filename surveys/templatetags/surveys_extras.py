@@ -12,7 +12,7 @@ def get_percent(num1, num2):
         return round(percent, 2)
     
     except:
-        return None
+        return 0
 
 
 register.filter('get_count', get_count)
