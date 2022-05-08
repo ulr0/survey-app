@@ -1,0 +1,41 @@
+{% extends "admin/base_site.html" %}
+{% load surveys_extras %}
+
+{% block content %}
+
+<div style='width:80%;margin:0 auto;'>
+    <div>
+        <h1 style='font-size:30px;font-weight:bold;'>제목 : {{ survey.title }}</h1>
+    </div>
+    <div>
+        <p style='text-align:end;font-size:15px;margin:10px;'>생성일 : {{ survey.created_at }}</p>
+        <p style='text-align:end;font-size:15px;margin:10px;'>수정일 : {{ survey.updated_at }}</p>
+    </div>
+    <div style='margin:10px;'>
+        <p style='font-size:18px;'>총 응답자 수 : 
+            {% if number_of_respondents %}
+            {{ number_of_respondents }}
+            {% else %}
+            0
+            {% endif %}
+            명
+        </p>
+        <p style='font-size:18px;'>총 문항 수 : {{ questions.count }} 문항</p>
+        <a style='font-size:18px;' href="{% url 'surveys:get_survey' survey.id %}">설문조사 페이지로 이동하기</a>
+    </div>
+    <div>
+    {% for question in questions %}
+        <div style='background-color:#faebd7;padding:5px 10px;margin-bottom:10px;'>
+            <p style='font-size:17px;margin:7px;'>문항 제목 : {{ question.title }}</p>
+                {% for choice in question.choice_set.all %}
+                <div style='background-color:#ffffff;padding:5px 0;margin:5px 0;'>
+                    <p style='padding-left:10px;font-size:15px;margin:5px;'>선택지 : {{ choice.text }}</p>
+                    <p style='padding-left:10px;font-size:15px;margin:5px;'>응답 비율 : {{ choice_count|get_count:choice.id|get_percent:number_of_respondents }} %</p>
+                </div>
+                {% endfor %}
+        </div>
+    {% endfor %}
+    <div>
+</div>
+
+{% endblock %}

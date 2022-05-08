@@ -10,25 +10,38 @@ class TimeStampModel(models.Model):
 
 class Survey(TimeStampModel):
     title = models.CharField(max_length=100)
-    is_deleted = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'surveys'
 
+    def __str__(self):
+        return f"{self.title}"
+
 class Question(TimeStampModel):
+    CHOICE_TYPE_CHOICES = (
+        ('checkbox', 'checkbox'),
+        ('radio', 'radio'),
+        ('select', 'select')
+    )
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
-    is_deleted = models.BooleanField(default=False)
+    choice_type = models.CharField(max_length=10, choices=CHOICE_TYPE_CHOICES, default='radio')
 
     class Meta:
         db_table = 'questions'
 
-class Choice(TimeStampModel):
+    def __str__(self):
+        return f"{self.title}"
+
+class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     text = models.CharField(max_length=50)
 
     class Meta:
         db_table = 'choices'
+    
+    def __str__(self):
+        return f"{self.text}"
 
 class Respondent(models.Model):
     survey = models.ForeignKey(Survey, on_delete=models.SET_NULL, null=True)
